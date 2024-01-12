@@ -1,13 +1,26 @@
 body {
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    background-image: url('./assets/bg-1.jpg');
+    background-size: cover;
+    position: relative;
 }
 
-.clear{
+.clear {
     display: none;
 }
 
-li{
+li {
     list-style-type: none;
+}
+
+.close {
+    display: none;
+}
+
+.open {
+    display: block;
 }

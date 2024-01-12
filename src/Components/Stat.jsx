@@ -1,15 +1,10 @@
 import React from 'react';
 
-const Stat = ({ items }) => {
-  const numDeleted = items.filter((item) => item.clear).length;
-  if(!items.length) return 'Start adding what you need for your journey'
+const Stat = ({ numItems, numDeleted, numPacked, percentage, items }) => {
+  if(!items.length) return 'Start adding what you need for your journey';
 
-  
-  const numItems = items.length;
-  const numPacked = items.filter((item) => item.packed).length;
-  const percentage = Math.round((numPacked / numItems) * 100);
   return (
-    <div>
+    <div className='sm:px-24 px-6'>
       {
       
         <div>
