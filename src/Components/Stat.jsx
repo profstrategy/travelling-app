@@ -1,18 +1,17 @@
 import React from 'react';
 
-const Stat = ({ numItems, numDeleted, numPacked, percentage, items }) => {
-  if(!items.length) return 'Start adding what you need for your journey';
+const Stat = ({ numItems, numPacked, percentage, items }) => {
+  if (!items.length) return <em className='text-white m-auto'>Start adding what you need for your journey</em>;
 
   return (
-    <div className='sm:px-24 px-6'>
+    <div className='m-auto'>
       {
-      
-        <div>
-          <em>
+
+        <div className='flex items-center'>
+          <em className='text-white'>
             {
-            percentage === 100 ? 'You have gotton everything you need':
-             numDeleted >= 1 ? 
-              `You have ${numItems} on your list, packed ${numPacked} (${percentage}%) items already and removed ${numDeleted} item(s)` : `You have ${numItems} on your list, packed ${numPacked} (${percentage}%)`}
+              percentage === 100 ? 'You have gotton everything you need' :
+               `You have ${numItems} on your list, packed ${numPacked} (${percentage}%)`}
           </em>
         </div>
       }

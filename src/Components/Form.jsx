@@ -1,18 +1,15 @@
-import React from 'react'
-import { useState } from 'react';
-import '../App.css'
+import React, { useState } from 'react';
+import Button from './Button';
 
-const Form = ({ onhandleItems, numItems, numDeleted, numPacked, percentage }) => {
-  const [isReciept, setIsreceipt] = useState(false);
-  const [showReciept, setShowReceipt] = useState(false)
+const Form = ({ onhandleItems, numItems, numPacked, percentage, onShowItems, handleRecipt, isRecipt }) => {
+  const [showReceipt, setShowReceipt] = useState(false);
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [download, setDownload] = useState(false)
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!description) return
+    if (!description) return;
 
     const newData = {
       description,
@@ -20,63 +17,80 @@ const Form = ({ onhandleItems, numItems, numDeleted, numPacked, percentage }) =>
       id: Date.now(),
       packed: false,
       clear: false
-    }
+    };
 
-    onhandleItems(newData)
+    onhandleItems(newData);
 
-    setDescription('')
-    setQuantity(1)
-  }
+    setDescription('');
+    setQuantity(1);
+  };
 
-  const handleReceipt = (ev) => {
-    if (!numItems) return alert('Input the items you need for your journey')
 
-    setIsreceipt(!ev)
-  }
-
-  const handleDownload = () => {
-    setDownload(!download)
-  }
 
   return (
-    <div className='sm:px-24 px-6'>
-      <div className='flex justify-center items-center gap-5'>
-      <form onSubmit={handleSubmit}>
-            <select value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} className='border-4 border-black w-70'>
-              {Array.from({ length: 20 }, (_, i) => i + 1).map((numSelect) => (
-                <option key={numSelect}>{numSelect}</option>
-              ))}
-            </select>
+    <div className='flex justify-center'>
+      <form onSubmit={handleSubmit} className='w-full md:w-5/6'>
+        <div className='flex items-center justify-center gap-3'>
+          <select
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            className='py-2 outline-0 shadow-md shadow-zinc-300 shadow-sm rounded'
+          >
+            {Array.from({ length: 20 }, (_, i) => i + 1).map((numSelect) => (
+              <option key={numSelect}>{numSelect}</option>
+            ))}
+          </select>
 
-            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} className="border-2 sm:px-10" />
+          <input
+            type='text'
+            value={description}
+            onClick={onShowItems}
+            onChange={(e) => setDescription(e.target.value)}
+            className=' w-5/6 md:w-3/4 py-2 rounded outline-0 shadow-zinc-300 shadow-sm'
+          />
 
-            <button onClick={() => setShowReceipt(!showReciept)} className="bg-black text-white border-2 px-5 py-2">ADD</button>
+          <Button
+            onClick={() => setShowReceipt(!showReceipt)}
 
-            {numItems ?
-              <button onClick={() => handleReceipt(isReciept)}>Your Receipt</button> : ''
-            }
+            bgColor='gradient-to-r from-cyan-500 to-blue-500'
+            px={'6'}
+            py={'2'}
+            shadowCol={'zinc-300'}
+          >
+            ADD
+          </Button>
+          <div className='fixed bottom-10 z-20 left-4'>
 
-            {isReciept ?
+            {isRecipt? (
               <>
-                <div>
-                  <ul>
-                    <li>Total-items: {numItems}</li>
-                    <li>Packed-items: {numPacked}</li>
-                    <li>Percentage: {percentage}%</li>
-                    <li>Deleted-items: {numDeleted}</li>
+                <div className='bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-3 top-5 rounded relative left-40'>
+                  <ul className='text-white'>
+                    <li className='border-b-2'>Total-items: {numItems}</li>
+                    <li className='border-b-2'>Packed-items: {numPacked}</li>
+                    <li className={`border-b-2 ${percentage < 50 ? 'text-red-600' : 'text-green-900'}`}>Percentage: {percentage}%</li>
                   </ul>
                 </div>
-                <div>
-                  <button onClick={() => handleDownload()}>Download</button>
-                  {download && <p>Hey! friend before you download your reciept follow me on on by clicking on the these icons</p>}
-                </div>
-              </>
-              : ''
-            }
-      </form>
-      </div>
-      </div>
-  )
-}
 
-export default Form
+              </>
+            ) : null}
+
+            {numItems ? (
+              <Button
+                onClick={handleRecipt}
+                bgColor='gradient-to-r from-cyan-500 to-blue-500'
+                px={'6'}
+                py={'2'}
+                shadowCol={'zinc-300'}
+                z_index={'50'}
+                saturation={'blend-saturation'}
+                bottom={'20'}
+              >Your Receipt</Button>
+            ) : null}
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default Form;
