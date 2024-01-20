@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 
 import './App.css'
-import { Form, PackingList, Stats } from './Components';
+import { Form, PackingList, Stats, ResetSort } from './Components';
 
 function App() {
   const [items, setItems] = useState([]);
@@ -10,8 +10,15 @@ function App() {
   const numPacked = items.filter((item) => item.packed).length;
   const percentage = Math.round((numPacked / numItems) * 100);
   const [isReceipt, setIsReceipt] = useState(false);
+  const [sortItem, setSortItem] = useState("input")
 
-  const initialDisplay = <h1 className='m-auto text-white'>ADD ITEMS FOR YOUR JOURNEY</h1>
+  let sortItems;
+  if (sortItem === 'input') sortItems = items;
+  if (sortItem === 'description') sortItems = items.slice().sort((a, b) => a.description.localeCompare(b.description))
+  if (sortItem === 'packed') sortItems = items.slice().sort((a, b) => Number(a.packed) - Number(b.packed))
+  if (sortItem === 'quantity') sortItems = items.slice().sort((a, b) => a.quantity - b.quantity)
+
+  const initialDisplay = <h1 className='text-center text-white mt-12'>ADD ITEMS FOR YOUR JOURNEY</h1>
 
   const handleAddingItems = (addItem) => {
     setItems((items) => [...items, addItem])
@@ -37,26 +44,31 @@ function App() {
   };
   return (
     <div>
-      <div className='relative bg-black shadow-sm shadow-zinc-300 w-full h-10 flex items-center justify-center'>
-        <h1 className=' text-[2rem] text-white'>TRAVELLING APP🚍</h1>
+      <div className='bg-black shadow-sm shadow-zinc-300  h-10'>
+        <h1 className=' text-[2rem] text-white grid justify-center'>TRAVELLING APP🚍</h1>
       </div>
-      <div className='relative header flex justify-center items-center flex-col'>
-        <div className='z-10 w-5/6 md:w-3/4 flex justify-center flex-col
-      relative bottom-20 '>
-          <Form onhandleItems={handleAddingItems} numItems={numItems} numPacked={numPacked} percentage={percentage} items={items} handleRecipt={handleReceipt} isRecipt={isReceipt} />
-          <div className='rounded relative m-auto w-full md:w-5/6 lg:w-3/4 flex flex-col items-baseline gap-14 mt-2 bottom-5 overflow-y-auto h-40 max-h-40 bg-black bg-opacity-70 shadow-sm mt-8 shadow-zinc-300'>
+      <div className='header'>
+        <div className='z-50 row-span-1 w-5/6 sm:w-5/6 m-auto lg:w-4/6 relative bottom-5
+      '>
+          <Form onhandleItems={handleAddingItems} numItems={numItems} items={items} />
+          <div className='rounded m-auto w-full md:w-5/6 lg:w-3/4 overflow-y-auto h-40 max-h-40 bg-black bg-opacity-70 shadow-sm shadow-zinc-300 mt-2'>
 
-            {numItems === 0 ? initialDisplay : <PackingList items={items} onDeleteItems={handleDelete} onhandleToggle={handleToggle} onClearitems={handleClearItems} />}
+            {numItems === 0 ? initialDisplay : <PackingList onDeleteItems={handleDelete} onhandleToggle={handleToggle} sortItems={sortItems} />}
           </div>
 
         </div>
 
-        <div className='fixed z-10 bg-black bg-opacity-70 shadow-sm shadow-zinc-300 flex  items-center bottom-0 w-full h-10'>
-          <Stats numItems={numItems} numPacked={numPacked} percentage={percentage} items={items} />
+        <div className='fixed z-10 bg-black bg-opacity-70 shadow-sm shadow-zinc-300  items-center bottom-0 w-full flex flex-col md:flex-row justify-between px-3'>
+          <ResetSort onClearitems={handleClearItems} sortItem={sortItem} setSortItem={setSortItem} handleReceipt={handleReceipt} numItems={numItems} isReceipt={isReceipt} numPacked={numPacked} percentage={percentage} />
+
+          <div>
+            <Stats numItems={numItems} numPacked={numPacked} percentage={percentage} items={items} />
+          </div>
         </div>
-      </div>
-    </div>
-  )
+        </div>
+        </div>
+
+        )
 }
 
-export default App
+        export default App

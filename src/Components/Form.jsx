@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Button from './Button';
 
-const Form = ({ onhandleItems, numItems, numPacked, percentage, onShowItems, handleRecipt, isRecipt }) => {
-  const [showReceipt, setShowReceipt] = useState(false);
+const Form = ({ onhandleItems, onShowItems }) => {
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState(1);
 
@@ -29,7 +28,7 @@ const Form = ({ onhandleItems, numItems, numPacked, percentage, onShowItems, han
 
   return (
     <div className='flex justify-center'>
-      <form onSubmit={handleSubmit} className='w-full md:w-5/6'>
+      <form onSubmit={handleSubmit} className='w-full md:w-5/6 '>
         <div className='flex items-center justify-center gap-3'>
           <select
             value={quantity}
@@ -50,7 +49,6 @@ const Form = ({ onhandleItems, numItems, numPacked, percentage, onShowItems, han
           />
 
           <Button
-            onClick={() => setShowReceipt(!showReceipt)}
 
             bgColor='gradient-to-r from-cyan-500 to-blue-500'
             px={'6'}
@@ -59,34 +57,6 @@ const Form = ({ onhandleItems, numItems, numPacked, percentage, onShowItems, han
           >
             ADD
           </Button>
-          <div className='fixed bottom-10 z-20 left-4'>
-
-            {isRecipt? (
-              <>
-                <div className='bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-3 top-5 rounded relative left-40'>
-                  <ul className='text-white'>
-                    <li className='border-b-2'>Total-items: {numItems}</li>
-                    <li className='border-b-2'>Packed-items: {numPacked}</li>
-                    <li className={`border-b-2 ${percentage < 50 ? 'text-red-600' : 'text-green-900'}`}>Percentage: {percentage}%</li>
-                  </ul>
-                </div>
-
-              </>
-            ) : null}
-
-            {numItems ? (
-              <Button
-                onClick={handleRecipt}
-                bgColor='gradient-to-r from-cyan-500 to-blue-500'
-                px={'6'}
-                py={'2'}
-                shadowCol={'zinc-300'}
-                z_index={'50'}
-                saturation={'blend-saturation'}
-                bottom={'20'}
-              >Your Receipt</Button>
-            ) : null}
-          </div>
         </div>
       </form>
     </div>

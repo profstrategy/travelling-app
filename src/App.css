@@ -4,17 +4,12 @@ body {
     height: 100vh;
     overflow: hidden;
     width: 100vw;
+    margin: auto;
+    background-image: url('./assets/bg-1.jpg');
+    background-size: cover;
 }
 
 .header {
-    background-image: url('./assets/bg-1.jpg');
-    background-size: cover;
-    position: relative;
-    width: 100vw;
-    min-height: 100vh;
-}
-
-.header::after {
     content: '';
     position: absolute;
     top: 30%;
@@ -22,7 +17,7 @@ body {
     left: 0;
     right: 0;
     background-image: url('./assets/bg-2.jpg');
-    background-size: cover;
+    background-size: auto;
 }
 
 .clear {
